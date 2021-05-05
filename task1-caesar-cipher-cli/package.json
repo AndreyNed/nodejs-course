@@ -1,0 +1,16 @@
+{
+  "name": "task1-caesar-cipher-cli",
+  "version": "1.0.0",
+  "description": "1st task in Rolling Scopes",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon src/index.js",
+    "build": "node src/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Andrei Nedaseikin",
+  "license": "ISC",
+  "devDependencies": {
+    "nodemon": "^2.0.7"
+  }
+}
