@@ -1,5 +1,6 @@
 const { Command } = require('commander');
 const fs = require('fs');
+const { pipeline, Transform } = require('stream');
 
 const program = new Command();
 
@@ -18,7 +19,48 @@ let {
   shiftNum,
 } = getOptions(program.opts());
 
-console.log({ actionType, source, destination, shiftNum });
+const transform = new Transform({
+  transform(chunk, encoding, callback) {
+    const shifted = chunk.toString().replace(/[A-Za-z]/g, ch => {
+      const code = [[65, 90], [97, 122]].reduce((acc, [min, max]) => (
+        shiftInRange(acc, shiftNum, min, max, actionType)
+      ), ch.charCodeAt(0));
+      // console.log(ch.charCodeAt(0), '==>', code);
+      return String.fromCharCode(code);
+    });
+
+    this.push(new Buffer.from(shifted, 'utf-8'));
+    callback();
+  }
+});
+
+pipeline(
+  source,
+  transform,
+  destination,
+  (err) => {
+    if (err) {
+      console.error(err);
+      process.exit(1);
+    }
+    console.log('Success!');
+  },
+);
+
+function shiftInRange(v, sh, min, max, action) {
+  let shifted = v;
+  if (v >= min && v <= max) {
+    if (action === 'encode') {
+      shifted = v + sh;
+      shifted = shifted > max ? min + shifted - max - 1 : shifted
+    } else if (action === 'decode') {
+      shifted = v - sh;
+      shifted = shifted < min ? min - shifted + max + 1 : shifted;
+    }
+  }
+
+  return shifted;
+}
 
 function getOptions({ input, output, shift, action }) {
   let s = parseInt(shift, 10);
@@ -47,10 +89,10 @@ function getOptions({ input, output, shift, action }) {
   }
 
   if (output) {
-    if (!fs.existsSync(output)) {
+    /* if (!fs.existsSync(output)) {
       console.error(`Error: file ${output} does not exist`);
       process.exit(1)
-    }
+    } */
     destination = fs.createWriteStream(output);
   }
 
