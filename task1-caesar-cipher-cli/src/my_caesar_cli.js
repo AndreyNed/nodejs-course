@@ -40,10 +40,10 @@ pipeline(
   destination,
   (err) => {
     if (err) {
-      console.error(err);
+      process.stderr.write(err.toString());
       process.exit(1);
     }
-    console.log('Success!');
+    process.stdout.write('Success!');
   },
 );
 
@@ -68,12 +68,12 @@ function getOptions({ input, output, shift, action }) {
   let destination = process.stdout;
 
   if (!action || typeof action !== 'string') {
-    console.error('Error: argument action is required and should be one of [encode, decode]');
+    process.stderr.write('Error: argument action is required and should be one of [encode, decode]');
     process.exit(1);
   }
 
   if (!Number.isInteger(s)) {
-    console.error('Error: argument shift is required and should be integer');
+    process.stderr.write('Error: argument shift is required and should be integer');
     process.exit(1);
   }
 
@@ -81,7 +81,7 @@ function getOptions({ input, output, shift, action }) {
 
   if (input) {
     if (!fs.existsSync(input)) {
-      console.error(`Error: file ${input} does not exist`);
+      process.stderr.write(`Error: file ${input} does not exist`);
       process.exit(1);
     } else {
       source = fs.createReadStream(input);
@@ -93,14 +93,15 @@ function getOptions({ input, output, shift, action }) {
     try {
       if (!fs.lstatSync(filePath).isDirectory()) throw new Error('Error: output directory does not exist');
     } catch (e) {
-      console.error(e);
+      process.stderr.write(e.toString());
+      process.exit(1);
     }
 
     if (fs.existsSync(output)) {
       try {
         fs.unlinkSync(output);
       } catch(e) {
-        console.error(`Error: no access to the ${output}`);
+        process.stderr.write(`Error: no access to the ${output}`);
         process.exit(1);
       }
     }
