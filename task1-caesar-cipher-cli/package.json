@@ -7,7 +7,8 @@
     "dev:empty:arguments": "nodemon src/my_caesar_cli.js",
     "dev:required-arguments": "nodemon src/my_caesar_cli.js --shift 3 --action encode",
     "dev:encode:full-arguments": "nodemon src/my_caesar_cli.js --input data/input/test-1.txt --output data/input/test-1_encoded.txt --shift 3 --action encode",
-    "prod:encode:full-arguments": "node src/my_caesar_cli.js --input data/input/bigFile.txt --output data/output/bigFile.txt --shift 3 --action encode",
+    "prod:encode:full-arguments": "node src/my_caesar_cli.js --input data/input/bigFile.txt --output data/output/bigFile_encoded.txt --shift 3 --action encode",
+    "prod:decode:full-arguments": "node src/my_caesar_cli.js --input data/input/bigFile_encoded.txt --output data/output/bigFile_decoded.txt --shift 3 --action decode",
     "prod:encode:test-1": "node src/my_caesar_cli.js --input data/input/test-1.txt --output data/input/test-1_encoded.txt --shift 3 --action encode",
     "prod:decode:test-1": "node src/my_caesar_cli.js --input data/input/test-1_encoded.txt --output data/output/test-1_decoded.txt --shift 3 --action decode",
     "test": "echo \"Error: no test specified\" && exit 1"

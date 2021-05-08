@@ -55,7 +55,7 @@ function shiftInRange(v, sh, min, max, action) {
       shifted = shifted > max ? min + shifted - max - 1 : shifted
     } else if (action === 'decode') {
       shifted = v - sh;
-      shifted = shifted < min ? min - shifted + max + 1 : shifted;
+      shifted = shifted < min ? max - min + shifted + 1 : shifted;
     }
   }
 
