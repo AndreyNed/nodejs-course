@@ -8,6 +8,8 @@
     "decode:bigFile": "node src/my_caesar_cli.js --input data/encoded/bigFile-encoded.txt --output data/decoded/bigFile-decoded.txt --shift 3 --action decode",
     "encode:test-1": "node src/my_caesar_cli.js --input data/decoded/test-1-decoded.txt --output data/encoded/test-1-encoded.txt --shift 3 --action encode",
     "decode:test-1": "node src/my_caesar_cli.js --input data/encoded/test-1-encoded.txt --output data/decoded/test-1-decoded.txt --shift 3 --action decode",
+    "encode:stdin": "node src/my_caesar_cli.js --shift 3 --action encode",
+    "decode:stdin": "node src/my_caesar_cli.js --shift 3 --action decode",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Andrei Nedaseikin",

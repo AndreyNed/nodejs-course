@@ -1,5 +1,6 @@
 const { Command } = require('commander');
 const fs = require('fs');
+const path = require('path');
 const { pipeline, Transform } = require('stream');
 
 const program = new Command();
@@ -25,7 +26,6 @@ const transform = new Transform({
       const code = [[65, 90], [97, 122]].reduce((acc, [min, max]) => (
         shiftInRange(acc, shiftNum, min, max, actionType)
       ), ch.charCodeAt(0));
-      // console.log(ch.charCodeAt(0), '==>', code);
       return String.fromCharCode(code);
     });
 
@@ -89,10 +89,22 @@ function getOptions({ input, output, shift, action }) {
   }
 
   if (output) {
-    /* if (!fs.existsSync(output)) {
-      console.error(`Error: file ${output} does not exist`);
-      process.exit(1)
-    } */
+    const filePath = path.dirname(output);
+    try {
+      if (!fs.lstatSync(filePath).isDirectory()) throw new Error('Error: output directory does not exist');
+    } catch (e) {
+      console.error(e);
+    }
+
+    if (fs.existsSync(output)) {
+      try {
+        fs.unlinkSync(output);
+      } catch(e) {
+        console.error(`Error: no access to the ${output}`);
+        process.exit(1);
+      }
+    }
+
     destination = fs.createWriteStream(output);
   }
 
