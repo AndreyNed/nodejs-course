@@ -28,24 +28,17 @@ function getOptions({ input, output, shift, action }) {
   }
 
   if (output) {
-    const filePath = path.dirname(output);
+    if (!fs.existsSync(output)) {
+      process.stderr.write(`Error: ${output} does not exist`);
+    }
+
     try {
-      if (!fs.lstatSync(filePath).isDirectory()) throw new Error('Error: output directory does not exist');
-    } catch (e) {
-      process.stderr.write(e.toString());
-      process.exit(1);
+      fs.accessSync(output, fs.constants.R_OK | fs.constants.W_OK);
+    } catch (err) {
+      console.error(`Error: no access to ${output}`);
     }
 
-    if (fs.existsSync(output)) {
-      try {
-        fs.unlinkSync(output);
-      } catch(e) {
-        process.stderr.write(`Error: no access to the ${output}`);
-        process.exit(1);
-      }
-    }
-
-    destination = fs.createWriteStream(output);
+    destination = fs.createWriteStream(output, { flags: 'a' });
   }
 
   return {
