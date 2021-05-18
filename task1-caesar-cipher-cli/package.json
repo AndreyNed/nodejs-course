@@ -1,0 +1,23 @@
+{
+  "name": "task1-caesar-cipher-cli",
+  "version": "1.0.0",
+  "description": "1st task in Rolling Scopes",
+  "main": "my_caesar_cli.js",
+  "scripts": {
+    "encode:bigFile": "node src/my_caesar_cli.js --input data/decoded/bigFile-decoded.txt --output data/encoded/bigFile-encoded.txt --shift 3 --action encode",
+    "decode:bigFile": "node src/my_caesar_cli.js --input data/encoded/bigFile-encoded.txt --output data/decoded/bigFile-decoded.txt --shift 3 --action decode",
+    "encode:test-1": "node src/my_caesar_cli.js --input data/decoded/test-1-decoded.txt --output data/encoded/test-1-encoded.txt --shift 3 --action encode",
+    "decode:test-1": "node src/my_caesar_cli.js --input data/encoded/test-1-encoded.txt --output data/decoded/test-1-decoded.txt --shift 3 --action decode",
+    "encode:stdin": "node src/my_caesar_cli.js --shift 3 --action encode",
+    "decode:stdin": "node src/my_caesar_cli.js --shift 3 --action decode",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Andrei Nedaseikin",
+  "license": "ISC",
+  "devDependencies": {
+    "nodemon": "^2.0.7"
+  },
+  "dependencies": {
+    "commander": "^7.2.0"
+  }
+}
